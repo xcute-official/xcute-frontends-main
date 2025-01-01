@@ -1,0 +1,87 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+
+
+model User {
+  id            String       @id @default(auto()) @map("_id") @db.ObjectId
+  username      String       @unique
+  email         String       @unique
+  password      String
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  profile       Profile?
+  posts         Post[]
+  likes         Like[]
+  comments      Comment[]
+}
+
+model Profile {
+  id        String  @id @default(auto()) @map("_id") @db.ObjectId
+  bio       String?
+  avatar    String?
+  userId    String  @unique @db.ObjectId
+  user      User    @relation(fields: [userId], references: [id])
+}
+
+model Post {
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  content     Json         // For rich text or structured data
+  type        PostType
+  authorId    String       @db.ObjectId
+  author      User         @relation(fields: [authorId], references: [id])
+  likes       Like[]
+  comments    Comment[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model Like {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  isLike    Boolean  // true = like, false = dislike
+  userId    String   @db.ObjectId
+  postId    String   @db.ObjectId
+  user      User     @relation(fields: [userId], references: [id])
+  post      Post     @relation(fields: [postId], references: [id])
+}
+
+model Comment {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  content   String
+  userId    String   @db.ObjectId
+  postId    String   @db.ObjectId
+  user      User     @relation(fields: [userId], references: [id])
+  post      Post     @relation(fields: [postId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Follower {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  followerId  String   @db.ObjectId @unique
+  followingId String   @db.ObjectId @unique
+}
+
+model Following {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId      String   @db.ObjectId
+  followingId String   @db.ObjectId
+}
+
+enum PostType {
+  BLOG
+  APPLICATION
+}
