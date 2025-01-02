@@ -1,6 +1,5 @@
 "use server";
-import * as z from 'zod';
-import { SrvrActionRspnsIntrfc } from '../types';
+import { SrvrActionRspnsIntrfc, UserSessionIntrfc, UserSessionTyp } from '../types';
 import { FieldValues } from 'react-hook-form';
 import { SigninSchema, SignupSchema } from '../schemas';
 import bcrypt from 'bcryptjs';
@@ -12,12 +11,15 @@ import { cookies } from 'next/headers';
 
 
 
-export const getUserSession = async (): Promise<SrvrActionRspnsIntrfc | null>=>{
+export const getUserSession = async (): Promise<SrvrActionRspnsIntrfc>=>{
     const token = (await cookies()).get('authToken')?.value;
     if(!token){
-        return null;
+        return {
+            status: 201,
+            message: 'failed getting user session'
+        }
     }
-    const sessionData = jwt.verify(token, config.authSecret);
+    const sessionData = jwt.verify(token, config.authSecret) as UserSessionIntrfc;
     return {
         data: sessionData,
         isAuthenticated: true,
@@ -46,14 +48,14 @@ export const signUp = async (data: FieldValues): Promise<SrvrActionRspnsIntrfc>=
     }
     try{
         const { username, password, email } = isValidated.data;
-        const userExists = await prismadb.user.findFirst({
+        const userExists = await prismadb.user.findUnique({
             where: {
                 username
             }
         });
         if(userExists){
             return {
-                message: 'user exists',
+                message: 'user already exists',
                 status: 501
             }
         }
@@ -94,10 +96,10 @@ export const signIn = async (data: FieldValues): Promise<SrvrActionRspnsIntrfc>=
         }
     }
     try{
-        const { id, code, password } = isValidated.data;
-        const user = await prismadb.user.findFirst({
+        const { id, password } = isValidated.data;
+        const user = await prismadb.user.findUnique({
             where: {
-                id
+                username: id
             }
         });
         if(!user){
@@ -109,11 +111,11 @@ export const signIn = async (data: FieldValues): Promise<SrvrActionRspnsIntrfc>=
         const passwordMatch = await bcrypt.compare(password, user.password);
         if(!passwordMatch){
             return {
-                message: 'password not found',
+                message: 'wrong password',
                 status: 201
             }
         }
-        const tokenPayload = {
+        const tokenPayload: UserSessionTyp = {
             username: user.username,
             id: user.id,
             email: user.email
@@ -131,8 +133,11 @@ export const signIn = async (data: FieldValues): Promise<SrvrActionRspnsIntrfc>=
         return {
             message: 'user loggedin',
             status: 200,
+            isAuthenticated: true,
+            redirected: `/authenticated/user/${user.username}`
         }
-    }catch{
+    }catch(error){
+        console.log(error, 'signIn error');
         return {
             message: 'server error',
             status: 500

@@ -48,7 +48,24 @@ model Post {
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
 }
-
+enum Category{
+  FRONTEND
+  BACKEND
+  SCRIPTING
+  DEVELOPMENT
+  ERRORS
+}
+model Note {
+  id          String       @id @default(auto()) @map("_id") @db.ObjectId
+  title       String
+  description String
+  category Category
+  tags String[]
+  richTextContent Json?
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+  slug String @unique
+}
 model Like {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   isLike    Boolean  // true = like, false = dislike

@@ -20,13 +20,14 @@ export const FormTextInput: React.FC<FormTextInputProps> = ({
     id, register, errors, type="text", placeholder, label, disabled, required
 })=>{
     return (
-        <div>
+        <div className="flex flex-col gap-1">
             {
-                label && <label htmlFor={id}>{label}</label>
+                label && <label htmlFor={id} className="text-sm">{label}</label>
             }
             <div>
-                <input type={type} {...register(id, { required })} disabled={disabled} id={id} className={clsx(
-
+                <input type={type} {...register(id, { required })} placeholder={placeholder} disabled={disabled} id={id} className={clsx(
+                    'bg-background-100 text-foreground-100 px-4 py-1.5 rounded-md border-transparent focus:outline-none focus:border-primary focus:border w-full',
+                    errors[id] && 'rohit'
                 )} autoComplete={id} />
             </div>
         </div>
@@ -53,15 +54,16 @@ export const FormPasswordInput: React.FC<FormPasswordInputProps> = ({
 })=>{
     const [type, setType] = useState<'text'|'password'>('password');
     return (
-        <div>
+        <div className="flex flex-col gap-1">
             {
-                label && <label htmlFor={id}>{label}</label>
+                label && <label htmlFor={id} className="text-sm">{label}</label>
             }
-            <div>
-                <input type={type} {...register(id, { required })} disabled={disabled} id={id} className={clsx(
-                    
+            <div className="relative">
+                <input type={type} {...register(id, { required })} placeholder={placeholder} disabled={disabled} id={id} className={clsx(
+                    'bg-background-100 text-foreground-100 px-4 py-1.5 rounded-md border-transparent focus:outline-none focus:border-primary focus:border w-full',
+                    errors[id] && 'rohit'
                 )} autoComplete={id} />
-                <button disabled={disabled} onClick={()=>setType(type==='password'?'text':'password')} className="">
+                <button type="button" disabled={disabled} onClick={()=>setType(type==='password'?'text':'password')} className="absolute top-1/2 right-2 transform -translate-y-1/2">
                     {
                         type === 'password' ? (
                             <TbEye size={18} />
@@ -99,13 +101,15 @@ export const FormTextareaInput: React.FC<FormTextareaInputProps> = ({
     id, register, errors, placeholder, label, disabled, required, doResize
 })=>{
     return (
-        <div>
+        <div className="flex flex-col gap-1">
             {
-                label && <label htmlFor={id}>{label}</label>
+                label && <label htmlFor={id} className="text-sm">{label}</label>
             }
             <div>
-                <textarea {...register(id, { required })} disabled={disabled} id={id} className={clsx(
-                    
+                <textarea {...register(id, { required })} placeholder={placeholder} disabled={disabled} id={id} className={clsx(
+                    'bg-background-100 text-foreground-100 px-4 py-1.5 rounded-md border-transparent focus:outline-none focus:border-primary focus:border w-full',
+                    errors[id] && 'rohit',
+                    !doResize && 'resize-none'
                 )} autoComplete={id}></textarea>
             </div>
         </div>

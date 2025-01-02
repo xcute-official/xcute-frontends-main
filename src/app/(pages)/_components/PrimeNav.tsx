@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { TbBriefcase, TbCode, TbGlass, TbHome } from "react-icons/tb";
 import ThemeToggle from "./ThemeToggle";
+import UserNav from "./UserNav";
 
 interface PageIntrfc {
   text: string;
@@ -35,6 +36,7 @@ const PrimeNav = () => {
       </div>
       <div className="flex items-center gap-16">
         <ThemeToggle />
+        <UserNav />
         <ul className="flex items-center gap-16">
           {
             pages.map(({text, href, icon}: PageIntrfc, index: number)=>(

@@ -5,7 +5,7 @@ import React from "react";
 import { TbLoader } from "react-icons/tb";
 
 interface ButtonProps {
-    id: string;
+    id?: string;
     onClick?: ()=>void;
     children?: React.ReactNode;
     disabled?: boolean;
@@ -16,8 +16,8 @@ export const Button: React.FC<ButtonProps> = ({
     id, onClick, children, disabled, variation, type
 })=>{
     return (
-        <button type={type} onClick={onClick} className={clsx(
-
+        <button id={id} disabled={disabled} type={type} onClick={onClick} className={clsx(
+            variation && 'flex'
         )}>
             {children}
         </button>
@@ -41,16 +41,19 @@ export const LoadingButton: React.FC<LoadingButtonProps> = ({
     onClick, disabled, variation, type, fullWidth, verbs, loading
 })=>{
     return (
-        <button type={type} onClick={onClick} className={clsx(
-            'flex items-center gap-2'
+        <button type={type} disabled={disabled} onClick={onClick} className={clsx(
+            'flex items-center gap-2 px-4 py-1.5 rounded-md bg-primary-200 justify-center',
+            fullWidth && 'w-full',
+            variation && 'rohit',
+            loading && 'loadingrohit'
         )}>
             {
-                loading && (
-                    <TbLoader className="animate-spin" size={18} />
+                disabled && (
+                    <TbLoader className="animate-spin text-foreground" size={18} />
                 )
             }
             <span>{
-                loading ? verbs[0] : verbs[1]    
+                disabled ? verbs[1] : verbs[0]    
             }</span>
         </button>
     )
