@@ -25,7 +25,7 @@ export const FormTextInput: React.FC<FormTextInputProps> = ({
                 label && <label htmlFor={id} className="text-sm">{label}</label>
             }
             <div>
-                <input type={type} {...register(id, { required })} placeholder={placeholder} disabled={disabled} id={id} className={clsx(
+                <input type={type} spellCheck={false} {...register(id, { required })} placeholder={placeholder} disabled={disabled} id={id} className={clsx(
                     'bg-background-100 text-foreground-100 px-4 py-1.5 rounded-md border-transparent focus:outline-none focus:border-primary focus:border w-full',
                     errors[id] && 'rohit'
                 )} autoComplete={id} />
@@ -59,7 +59,7 @@ export const FormPasswordInput: React.FC<FormPasswordInputProps> = ({
                 label && <label htmlFor={id} className="text-sm">{label}</label>
             }
             <div className="relative">
-                <input type={type} {...register(id, { required })} placeholder={placeholder} disabled={disabled} id={id} className={clsx(
+                <input type={type} spellCheck={false} {...register(id, { required })} placeholder={placeholder} disabled={disabled} id={id} className={clsx(
                     'bg-background-100 text-foreground-100 px-4 py-1.5 rounded-md border-transparent focus:outline-none focus:border-primary focus:border w-full',
                     errors[id] && 'rohit'
                 )} autoComplete={id} />
@@ -106,7 +106,7 @@ export const FormTextareaInput: React.FC<FormTextareaInputProps> = ({
                 label && <label htmlFor={id} className="text-sm">{label}</label>
             }
             <div>
-                <textarea {...register(id, { required })} placeholder={placeholder} disabled={disabled} id={id} className={clsx(
+                <textarea spellCheck={false} {...register(id, { required })} placeholder={placeholder} disabled={disabled} id={id} className={clsx(
                     'bg-background-100 text-foreground-100 px-4 py-1.5 rounded-md border-transparent focus:outline-none focus:border-primary focus:border w-full',
                     errors[id] && 'rohit',
                     !doResize && 'resize-none'

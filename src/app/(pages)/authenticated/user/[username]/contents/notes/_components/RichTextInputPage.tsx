@@ -1,33 +1,44 @@
 "use client";
 
-import { updateNoteContent } from "@/app/actions/content";
+import { readNote, updateNoteContent } from "@/app/actions/content";
 import { EditorContent, JSONContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { useParams } from "next/navigation";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { TbBold, TbCode, TbCodeAsterisk, TbH1, TbH2, TbH3, TbH4, TbH5, TbH6, TbItalic, TbList, TbMagnet, TbMenuOrder, TbQuote, TbStrikethrough, TbUnderline } from "react-icons/tb";
 
 const RichTextInputPage = () => {
     const router = useRouter();
-    const { id } = useParams();
-    const [loading, setIsLoading] = useState<boolean>(false);
+    const { slug, id } = useParams();
+    const [isLoading, setIsLoading] = useState<boolean>(false);
     const [content, setContent] = useState<JSONContent | null>(null);
     const handleSave = ()=>{
         setIsLoading(true);
         updateNoteContent(id as string, content).then((response)=>{
+            console.log(response);
             if(response.status===200 && response.redirected){
                 router.push(response.redirected);
             }
         })
     }
+    useEffect(()=>{
+      if(id!=='new' && slug){
+        setIsLoading(true);
+        readNote(slug as string).then((response)=>{
+          if(response.status===200 && response.data){
+            setContent(response.data);
+          }
+        }).catch((error)=>console.log('failed for data fetch')).finally(()=>setIsLoading(false));
+      }
+    }, [id, slug]);
     const editor = useEditor({
         extensions: [
             StarterKit
         ],
-        content: null,
-        editable: !loading,
+        content: content,
+        editable: !isLoading,
         onUpdate: ({editor})=>{
             setContent(editor.getJSON());
         },

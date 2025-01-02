@@ -74,7 +74,16 @@ model Like {
   user      User     @relation(fields: [userId], references: [id])
   post      Post     @relation(fields: [postId], references: [id])
 }
-
+model Contact {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  email String @unique
+  name String
+  phone String
+  subject String
+  message String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
 model Comment {
   id        String   @id @default(auto()) @map("_id") @db.ObjectId
   content   String

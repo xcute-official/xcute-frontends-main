@@ -1,5 +1,5 @@
 "use client";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { UserSessionTyp } from "../types";
 import { getUserSession } from "../actions/authenticating";
 interface SessionIntrfc {
@@ -10,6 +10,9 @@ type SessionType = SessionIntrfc | null;
 const SessionContext = createContext<SessionType>(null);
 export const UserSessionProvider = ({children}:{children: React.ReactNode;})=>{
     const [user, setUser] = useState<UserSessionTyp>(null);
+    useEffect(()=>{
+        updateUser();
+    }, []);
     const updateUser = async ()=>{
         try{
             const response = await getUserSession();

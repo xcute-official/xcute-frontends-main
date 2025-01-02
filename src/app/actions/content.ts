@@ -44,6 +44,77 @@ export const readNotes = async (): Promise<SrvrActionRspnsIntrfc>=>{
         }
     }
 }
+export const readNote = async (slug: string): Promise<SrvrActionRspnsIntrfc>=>{
+    try{
+        const note = await prismadb.note.findUnique({
+            where: {
+                slug
+            }
+        });
+        if(!note){
+            return {
+                message: "failed",
+                status: 201,
+            }
+        }
+        if(!note.richTextContent){
+            return {
+                message: "success",
+                status: 200,
+            }
+        }
+        return {
+            message: "success",
+            status: 200,
+            data: note?.richTextContent
+        }
+    }catch(error){
+        console.log(error);
+        return {
+            message: '',
+            status: 200
+        }
+    }
+}
+export const updateNoteConfig = async (id: string, data: FieldValues): Promise<SrvrActionRspnsIntrfc>=>{
+    const isValidated = NoteConfigSchema.safeParse(data);
+    if(!isValidated.success){
+        return {
+            message: "invalid details",
+            status: 200
+        }
+    }
+    try{
+        const { title, description, tags, category } = isValidated.data;
+        console.log(tags, category);
+        const updateNote = await prismadb.note.update({
+            data: {
+                title,
+                description
+            },
+            where: {
+                id
+            }
+        });
+        if(!updateNote){
+            return {
+                message: "failed for updated",
+                status: 201
+            }
+        }
+        return {
+            message: "success",
+            status: 200,
+            redirected: `/authenticated/user/payal/contents/notes/${updateNote.id}/${updateNote.slug}`
+        }
+    }catch(error){
+        console.log(error);
+        return {
+            message: 'failed',
+            status: 201
+        }
+    }
+}
 export const updateNoteContent = async (id: string, content: JSONContent | null): Promise<SrvrActionRspnsIntrfc>=>{
     try{
         const updatedContent = await prismadb.note.update({
@@ -58,11 +129,12 @@ export const updateNoteContent = async (id: string, content: JSONContent | null)
             message: 'success',
             data: updatedContent,
             status: 200,
-            redirected: `/`
         }
-    }catch{
+    }catch(error){
+        console.log("checking");
+        console.log(error, "error");
         return {
-            message: 'faile',
+            message: 'failed',
             status: 201
         }
     }

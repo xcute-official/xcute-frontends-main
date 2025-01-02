@@ -7,12 +7,12 @@ const UserNav = () => {
   if(!user){
     return (
         <div className="flex items-center gap-2">
-            <Link href="/" className="">
+            <Link href="/authenticating/signin" className="">
                 <div>
                     <span>login</span>
                 </div>
             </Link>
-            <Link href="/" className="">
+            <Link href="/authenticating/signup" className="">
                 <div>
                     <span>signup</span>
                 </div>
@@ -21,7 +21,11 @@ const UserNav = () => {
     ) 
   }
   return (
-    <span>{user.username}</span>
+    <Link href={`/authenticated/user/${user.username}`}>
+        <div>
+            <span>{user.username}</span>
+        </div>
+    </Link>
   )
 };
 

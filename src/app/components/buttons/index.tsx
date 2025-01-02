@@ -2,6 +2,7 @@
 
 import clsx from "clsx";
 import React from "react";
+import { CgDanger } from "react-icons/cg";
 import { TbLoader } from "react-icons/tb";
 
 interface ButtonProps {
@@ -36,16 +37,18 @@ interface LoadingButtonProps {
     fullWidth?: boolean;
     verbs: string[];
     loading?: boolean;
+    danger?: boolean;
 }
 export const LoadingButton: React.FC<LoadingButtonProps> = ({
-    onClick, disabled, variation, type, fullWidth, verbs, loading
+    onClick, disabled, variation, type, fullWidth, verbs, loading, danger
 })=>{
     return (
         <button type={type} disabled={disabled} onClick={onClick} className={clsx(
             'flex items-center gap-2 px-4 py-1.5 rounded-md bg-primary-200 justify-center',
             fullWidth && 'w-full',
             variation && 'rohit',
-            loading && 'loadingrohit'
+            loading && 'loadingrohit',
+            danger && 'bg-danger-200 text-neutral-white'
         )}>
             {
                 disabled && (

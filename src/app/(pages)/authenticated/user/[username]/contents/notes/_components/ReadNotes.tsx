@@ -3,6 +3,7 @@
 import { deleteNote, readNotes } from "@/app/actions/content";
 import { Note } from "@prisma/client";
 import { useEffect, useState } from "react";
+import ReadNoteItem from "./ReadNoteItem";
 
 const ReadNotes = () => {
     const [loading, setLoading] = useState<boolean>(true);
@@ -26,15 +27,11 @@ const ReadNotes = () => {
                 <span>loading</span>
             ) : (
                 notes && notes.length>0 ? (
-                    <div>
+                    <ul>
                         {notes.map((item, index)=>(
-                            <div key={index}>
-                                <span>{item.title}</span>
-                                <span>{item.description}</span>
-                                <button onClick={()=>handleDelete(item.id)}>delete</button>
-                            </div>
+                            <ReadNoteItem slug={item.slug} id={item.id} key={index} title={item.title} description={item.description} />
                         ))}
-                    </div>
+                    </ul>
                 ) : (
                     <span>no data found.</span>
                 )

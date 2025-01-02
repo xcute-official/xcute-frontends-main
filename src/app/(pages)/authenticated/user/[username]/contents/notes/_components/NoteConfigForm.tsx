@@ -1,6 +1,6 @@
 "use client";
 
-import { createNoteConfig, readNoteConfig } from "@/app/actions/content";
+import { createNoteConfig, readNoteConfig, updateNoteConfig } from "@/app/actions/content";
 import { useParams } from "next/navigation";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
@@ -35,6 +35,7 @@ const NoteConfigForm = () => {
           setValue('tags', getNoteConfig.data.tags);
           setValue('category', getNoteConfig.data.category);
         }
+        setIsLoading(false);
       }
     }
     init();
@@ -43,12 +44,21 @@ const NoteConfigForm = () => {
     setIsLoading(true);
     setError('');
     setSuccess('');
-    createNoteConfig(data).then((response)=>{
-      if(response.status===200 && response.redirected){
-        setSuccess('note config created');
-        router.push(response.redirected);
-      }
-    })
+    if(id!=='new'){
+      updateNoteConfig(id as string, data).then((response)=>{
+        if(response.status===200 && response.redirected){
+          setSuccess('note config created');
+          router.push(response.redirected);
+        }
+      }).catch(()=>setError('unknown error')).finally(()=>setIsLoading(false));
+    }else if(id==='new'){
+      createNoteConfig(data).then((response)=>{
+        if(response.status===200 && response.redirected){
+          setSuccess('note config created');
+          router.push(response.redirected);
+        }
+      }).catch(()=>setError('unknown error')).finally(()=>setIsLoading(false));
+    }
   }
   return (
     <section className="w-full mt-8">

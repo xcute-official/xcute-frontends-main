@@ -22,14 +22,14 @@ const pages: PageIntrfc[] = [
     icon: <TbBriefcase size={18} />
   },{
     text: 'students',
-    href: '/students',
+    href: '/explore',
     icon: <TbGlass size={18} />
   }
 ]
 
 const PrimeNav = () => {
   return (
-    <nav className="flex items-center justify-between w-full">
+    <nav className="flex items-center justify-between w-full bg-background">
       <div className="flex items-center gap-2">
         <TbCode size={18} />
         <span>xcute</span>
