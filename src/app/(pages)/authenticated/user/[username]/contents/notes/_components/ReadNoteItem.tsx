@@ -1,6 +1,6 @@
 "use client";
 import { deleteNote } from "@/app/actions/content";
-import { Button, LoadingButton } from "@/app/components/buttons";
+import { LoadingButton } from "@/app/components/buttons";
 import { useUserSession } from "@/app/contexts/user-session";
 import Link from "next/link";
 import { useState } from "react";
@@ -21,6 +21,7 @@ const ReadNoteItem: React.FC<ReadNoteItemProps> = ({
     deleteNote(id).then((response)=>{
       if(response.status===200){
         setIsLoading(false);
+        setIsDeleted(true);
       }
     })
   }

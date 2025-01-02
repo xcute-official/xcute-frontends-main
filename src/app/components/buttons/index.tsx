@@ -2,7 +2,6 @@
 
 import clsx from "clsx";
 import React from "react";
-import { CgDanger } from "react-icons/cg";
 import { TbLoader } from "react-icons/tb";
 
 interface ButtonProps {

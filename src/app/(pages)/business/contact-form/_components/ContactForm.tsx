@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import { FormPasswordInput, FormTextareaInput, FormTextInput } from "@/app/components/inputs";
+import { FormTextareaInput, FormTextInput } from "@/app/components/inputs";
 import { ErrorMessage, SuccessMessage } from "@/app/components/status-messages";
 import { LoadingButton } from "@/app/components/buttons";
 import { createContact } from "@/app/actions/business";

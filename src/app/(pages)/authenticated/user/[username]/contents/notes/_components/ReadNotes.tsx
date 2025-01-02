@@ -1,6 +1,6 @@
 "use client";
 
-import { deleteNote, readNotes } from "@/app/actions/content";
+import { readNotes } from "@/app/actions/content";
 import { Note } from "@prisma/client";
 import { useEffect, useState } from "react";
 import ReadNoteItem from "./ReadNoteItem";
@@ -17,9 +17,6 @@ const ReadNotes = () => {
             }
         })
     }, []);
-    const handleDelete = (id: string)=>{
-        deleteNote(id);
-    }
   return (
     <div>
         {

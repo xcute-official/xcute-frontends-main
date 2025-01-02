@@ -30,7 +30,7 @@ const RichTextInputPage = () => {
           if(response.status===200 && response.data){
             setContent(response.data);
           }
-        }).catch((error)=>console.log('failed for data fetch')).finally(()=>setIsLoading(false));
+        }).catch((error)=>console.log('failed for data fetch', error)).finally(()=>setIsLoading(false));
       }
     }, [id, slug]);
     const editor = useEditor({
