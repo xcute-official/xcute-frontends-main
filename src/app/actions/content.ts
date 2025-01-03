@@ -5,6 +5,7 @@ import { SrvrActionRspnsIntrfc } from "../types";
 import { NoteConfigSchema } from "../schemas";
 import { prismadb } from "../libs/prismadb";
 import { JSONContent } from "@tiptap/react";
+import { getUserSession } from "./authenticating";
 export const deleteNote = async (id: string): Promise<SrvrActionRspnsIntrfc>=>{
     try{
         const deleting = await prismadb.note.delete({
@@ -90,7 +91,8 @@ export const updateNoteConfig = async (id: string, data: FieldValues): Promise<S
         const updateNote = await prismadb.note.update({
             data: {
                 title,
-                description
+                description,
+                slug: title.toLowerCase().replace(/\s+/g, '-'.slice(0, 200))
             },
             where: {
                 id
@@ -102,10 +104,17 @@ export const updateNoteConfig = async (id: string, data: FieldValues): Promise<S
                 status: 201
             }
         }
+        const user = await getUserSession();
+        if(!user){
+            return {
+                message: "no user is logged In",
+                status: 202
+            }
+        }
         return {
             message: "success",
             status: 200,
-            redirected: `/authenticated/user/payal/contents/notes/${updateNote.id}/${updateNote.slug}`
+            redirected: `/authenticated/user/${user.data.username}/contents/notes/${updateNote.id}/${updateNote.slug}`
         }
     }catch(error){
         console.log(error);
@@ -115,11 +124,18 @@ export const updateNoteConfig = async (id: string, data: FieldValues): Promise<S
         }
     }
 }
-export const updateNoteContent = async (id: string, content: JSONContent | null): Promise<SrvrActionRspnsIntrfc>=>{
+export const updateNoteContent = async (id: string, content: string): Promise<SrvrActionRspnsIntrfc>=>{
+    if(!content){
+        return {
+            message: 'invalid details',
+            status: 501
+        };
+    }
+    const jsonContent = JSON.parse(content);
     try{
         const updatedContent = await prismadb.note.update({
             data: {
-                richTextContent: content
+                richTextContent: jsonContent || {},
             },
             where: {
                 id
@@ -131,8 +147,8 @@ export const updateNoteContent = async (id: string, content: JSONContent | null)
             status: 200,
         }
     }catch(error){
-        console.log("checking");
         console.log(error, "error");
+        console.log({content}, 'updating');
         return {
             message: 'failed',
             status: 201

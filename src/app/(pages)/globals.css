@@ -11,6 +11,19 @@ body,
 
 
 
+
+.richTextEditor h1 {
+    @apply text-4xl
+}
+.richTextEditor h3 {
+    @apply text-2xl
+}
+.richTextEditor h5 {
+    @apply text-xl
+}
+
+
+
 @layer base{
     html{
         --color-background: #ffffff;

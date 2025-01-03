@@ -1,4 +1,4 @@
-"use client";
+
 
 import RichTextInputPage from "../../_components/RichTextInputPage";
 

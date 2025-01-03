@@ -4,7 +4,7 @@ import ReadNotes from "./_components/ReadNotes";
 const page = () => {
   return (
     <div>
-        <ReadNotes />
+      <ReadNotes />
     </div>
   )
 };

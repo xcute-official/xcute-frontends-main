@@ -1,7 +1,7 @@
 
 import NoteConfigForm from "../_components/NoteConfigForm";
 
-const page = async () => {
+const page = () => {
   return <div>
     <NoteConfigForm />
   </div>;
