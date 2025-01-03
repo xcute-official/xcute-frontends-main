@@ -19,7 +19,7 @@ export const Extensions = [
         },
         codeBlock: {
             HTMLAttributes: {
-                class: 'p-2 rounded-md ml-2 bg-background-100 text-secondary texst-xs font-mono'
+                class: 'p-2 rounded-md bg-background-100 text-secondary texst-xs font-mono w-fit'
             }
         },
         blockquote: {

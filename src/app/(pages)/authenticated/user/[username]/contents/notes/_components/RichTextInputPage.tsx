@@ -28,7 +28,12 @@ const RichTextInputPage = () => {
 
   const handleSave = () => {
     setIsLoading(true);
-    updateNoteContent(id as string, JSON.stringify(previewHtml)).then((response) => {
+    if(!debouncedEditorState){
+      return;
+    }
+    const sendingContent = JSON.stringify(debouncedEditorState);
+    console.log('sendingContent: ', sendingContent);
+    updateNoteContent(id as string, sendingContent).then((response) => {
       if (response.status === 200 && response.data) {
         setIsSaved(true);
       } else {
@@ -36,11 +41,11 @@ const RichTextInputPage = () => {
       }
     }).catch(() => setIsSaved(false)).finally(() => setIsLoading(false));
   }
+
   const debouncedEditorState = useDebounce(content, 1000);
 
-
   useEffect(() => {
-    if (!debouncedEditorState) {
+    if (!content || !debouncedEditorState) {
       return;
     }
     if (!doAutoSave) {
@@ -50,6 +55,8 @@ const RichTextInputPage = () => {
     setPreviewHtml(() => generateHTML(debouncedEditorState, Extensions));
     handleSave();
   }, [debouncedEditorState]);
+
+
   useEffect(() => {
     if (id && slug) {
       setIsLoading(true);
@@ -62,18 +69,19 @@ const RichTextInputPage = () => {
   }, [id, slug]);
   const editor = useEditor({
     extensions: Extensions,
-    content: content,
+    content: debouncedEditorState as JSONContent,
     editable: !isLoading,
     onUpdate: ({ editor }) => {
-      if (!content) {
-        return;
-      }
       setContent(editor.getJSON());
-      setPreviewHtml(() => generateHTML(content, [StarterKit]));
+      if(content){
+        console.log('previewed htl');
+        setPreviewHtml(generateHTML(content, [StarterKit]));
+      }
+      console.log('rendering Content: ', content);
     },
     editorProps: {
       attributes: {
-        class: 'outline-none text-sm',
+        class: 'outline-none text-sm flex flex-col gap-4',
         spellcheck: 'false'
       }
     },
@@ -82,6 +90,14 @@ const RichTextInputPage = () => {
   if (!editor) {
     return null;
   }
+
+
+
+
+
+
+
+
   return (
     <div>
       <div className="border border-background-100 rounded-md px-2 py-2 flex justify-between items-center">
@@ -116,10 +132,9 @@ const RichTextInputPage = () => {
         </div>
       </div>
       <div className="w-full flex items-start gap-2 mt-4">
-        <div className="richTextEditor w-[50%] border p-2 rounded-md">
+        <div className="richTextEditor w-full p-2 rounded-md">
           <EditorContent editor={editor} />
         </div>
-        <div className="flex flex-col gap-4 w-[50%] border richTextEditor min-h-full p-2 rounded-md" dangerouslySetInnerHTML={{ __html: previewHtml }}></div>
       </div>
     </div>
   )

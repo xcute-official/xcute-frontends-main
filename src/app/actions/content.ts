@@ -127,31 +127,38 @@ export const updateNoteConfig = async (id: string, data: FieldValues): Promise<S
 export const updateNoteContent = async (id: string, content: string): Promise<SrvrActionRspnsIntrfc>=>{
     if(!content){
         return {
-            message: 'invalid details',
-            status: 501
-        };
+            message: "invalid details",
+            status: 500
+        }
     }
-    const jsonContent = JSON.parse(content);
+    const jsonContent: JSONContent = JSON.parse(content);
+    if(!jsonContent){return {message: "failed", status: 500}};
     try{
-        const updatedContent = await prismadb.note.update({
+        const updated = await prismadb.note.update({
             data: {
-                richTextContent: jsonContent || {},
+                richTextContent: jsonContent
             },
             where: {
                 id
             }
         });
+        console.log({updated});
+        if(!updated){
+            return {
+                message: "failed while saving",
+                status: 500
+            }
+        }
         return {
             message: 'success',
-            data: updatedContent,
             status: 200,
+            data: {}
         }
     }catch(error){
-        console.log(error, "error");
-        console.log({content}, 'updating');
+        console.log("updateNoteContent: ", error);
         return {
             message: 'failed',
-            status: 201
+            status: 500
         }
     }
 }

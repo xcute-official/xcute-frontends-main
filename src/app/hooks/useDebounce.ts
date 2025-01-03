@@ -1,6 +1,7 @@
 import { useEffect } from "react";
+import { JSONContent } from "@tiptap/react";
 import { useState } from "react";
-export function useDebounce(value: unknown, delay: number) {
+export function useDebounce(value: JSONContent | null, delay: number): JSONContent | null {
   const [debouncedValue, setDebouncedValue] = useState(value);
   useEffect(() => {
     const handler = setTimeout(() => {
@@ -10,6 +11,5 @@ export function useDebounce(value: unknown, delay: number) {
       clearTimeout(handler);
     };
   }, [value, delay]);
-
   return debouncedValue;
 }
