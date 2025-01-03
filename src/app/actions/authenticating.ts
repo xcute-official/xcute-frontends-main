@@ -5,8 +5,8 @@ import { SigninSchema, SignupSchema } from '../schemas';
 import bcrypt from 'bcryptjs';
 import { prismadb } from '../libs/prismadb';
 import jwt from 'jsonwebtoken'
-import { config } from '../config';
 import { cookies } from 'next/headers';
+import { Auth as authConfig } from '../configs';
 
 
 
@@ -19,7 +19,7 @@ export const getUserSession = async (): Promise<SrvrActionRspnsIntrfc>=>{
             message: 'failed getting user session'
         }
     }
-    const sessionData = jwt.verify(token, config.authSecret) as UserSessionIntrfc;
+    const sessionData = jwt.verify(token, authConfig.authSecret) as UserSessionIntrfc;
     return {
         data: sessionData,
         isAuthenticated: true,
@@ -120,7 +120,7 @@ export const signIn = async (data: FieldValues): Promise<SrvrActionRspnsIntrfc>=
             id: user.id,
             email: user.email
         };
-        const token = jwt.sign(tokenPayload, config.authSecret, {expiresIn: '1h'});
+        const token = jwt.sign(tokenPayload, authConfig.authSecret, {expiresIn: '1h'});
         (await cookies()).set({
             name: 'authToken',
             value: token,

@@ -1,6 +1,6 @@
 "use server";
 
-import { cloudinaryConfig } from "../config";
+import { Cloudinary as cloudinaryConfig } from "../configs";
 import { SrvrActionRspnsIntrfc } from "../types";
 
 

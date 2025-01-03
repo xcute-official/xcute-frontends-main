@@ -1,8 +1,11 @@
-export const config = {
+
+export const Auth = {
     authSecret: process.env.AUTH_SECRET!,
 }
-
-export const cloudinaryConfig = {
+export const Prisma = {
+    databaseUrl: process.env.DATABASE_URL!
+}
+export const Cloudinary = {
     uploadPreset: process.env.CLOUDINARY_UPLOAD_PRESET!,
     apiKey: process.env.CLOUDINARY_API_KEY!,
     apiSecret: process.env.CLOUDINARY_API_SECRET!,
