@@ -43,11 +43,11 @@ export const LoadingButton: React.FC<LoadingButtonProps> = ({
 })=>{
     return (
         <button type={type} disabled={disabled} onClick={onClick} className={clsx(
-            'flex items-center gap-2 px-4 py-1.5 rounded-md bg-primary-200 justify-center',
+            'flex items-center gap-2 px-4 py-1.5 rounded-md bg-primary-200 justify-center text-sm border border-danger',
             fullWidth && 'w-full',
             variation && 'rohit',
             loading && 'loadingrohit',
-            danger && 'bg-danger-200 text-neutral-white'
+            danger && 'bg-danger text-neutral-white'
         )}>
             {
                 disabled && (

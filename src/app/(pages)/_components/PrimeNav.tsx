@@ -29,10 +29,10 @@ const pages: PageIntrfc[] = [
 
 const PrimeNav = () => {
   return (
-    <nav className="flex items-center justify-between w-full bg-background">
+    <nav className="flex items-center justify-between w-full">
       <div className="flex items-center gap-2">
         <TbCode size={18} />
-        <span>xcute</span>
+        <span>Ddev-Company</span>
       </div>
       <div className="flex items-center gap-16">
         <ThemeToggle />

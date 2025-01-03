@@ -12,15 +12,19 @@ const page = async ({params}: PageParams) => {
     return <div>malware</div>
   }
   return (
-    <div>
-      <div>
-        <Link href="/authenticated/user/anjali/contents/notes/new">
+    <div className="w-full md:mx-auto md:w-1/2">
+      <div className="flex items-center justify-between">
+        <div className="flex flex-col gap-2">
+          <span className="text-primary text-xl font-bold">{username}</span>
+          <span className="text-sm">{user.data.email}</span>
+        </div>
+        <Link href="/authenticated/user/anjali/contents/notes/new" className="rounded-md text-sm border border-background-100 px-2 py-1.5">
           <div>
             <span>+Add new note</span>
           </div>
         </Link>
       </div>
-      <div>
+      <div className="mt-8">
         <ReadNotes />
       </div>
     </div>

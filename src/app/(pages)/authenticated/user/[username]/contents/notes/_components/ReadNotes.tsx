@@ -24,7 +24,7 @@ const ReadNotes = () => {
                 <span>loading</span>
             ) : (
                 notes && notes.length>0 ? (
-                    <ul>
+                    <ul className="flex flex-col gap-8">
                         {notes.map((item, index)=>(
                             <ReadNoteItem slug={item.slug} id={item.id} key={index} title={item.title} description={item.description} />
                         ))}

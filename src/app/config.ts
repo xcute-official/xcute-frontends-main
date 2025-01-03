@@ -4,7 +4,8 @@ export const config = {
 
 export const cloudinaryConfig = {
     uploadPreset: process.env.CLOUDINARY_UPLOAD_PRESET!,
-    preset: process.env.CLOUDINARY_API_KEY!,
+    apiKey: process.env.CLOUDINARY_API_KEY!,
     apiSecret: process.env.CLOUDINARY_API_SECRET!,
-    url: process.env.CLOUDINARY_URL!
+    url: process.env.CLOUDINARY_URL!,
+    cloudName: process.env.CLOUDINARY_CLOUD_NAME!
 }
